@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Dashboard</h1>
+    <p>Hello, {{ user.username }}!</p>
+    <p>Your teams:</p>
+    <ul>
+        {% for team in teams %}
+            <li><a href="{% url 'team_detail' team.id %}">{{ team.name }}</a></li>
+        {% empty %}
+            <li>You are not part of any teams yet.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'create_team' %}">Create a new team</a></p>
+</body>
+</html>
