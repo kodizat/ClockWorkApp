@@ -8,11 +8,18 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('dashboard')
+            # Optionally, you can set is_team_captain or any other custom logic here
+            # user.is_team_captain = False  # If you want to set default value
+            user.save()
+            login(request, user)  # Log the user in after registration
+            return redirect('dashboard')  # Redirect to dashboard or desired page
+        else:
+            # If the form is not valid, display form errors
+            return render(request, 'register.html', {'form': form})
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
+
 
 def dashboard(request):
     teams = Team.objects.all()  # List all teams for simplicity
