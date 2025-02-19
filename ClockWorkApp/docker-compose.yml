@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: clockworkdb
+      POSTGRES_USER: clockworkuser
+      POSTGRES_PASSWORD: mysecurepassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clockworkuser -d clockworkdb"]
+      interval: 10s
+      retries: 5
+    networks:
+      - clockwork_network
+
+  web:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_ALLOWED_HOSTS=*
+    ports:
+      - "8000:8000"
+    networks:
+      - clockwork_network
+
+volumes:
+  postgres_data:
+
+networks:
+  clockwork_network:
+    driver: bridge

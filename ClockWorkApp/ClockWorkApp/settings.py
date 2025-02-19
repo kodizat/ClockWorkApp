@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t5ulr_u@50a$d!@p)*@rw4kh(!=pl!^ep$7jz08k@byjf#9dhd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -95,10 +95,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'clockworkdb',
+        'USER': 'clockworkuser',
+        'PASSWORD': 'mysecurepassword',
+        'HOST': os.getenv('DJANGO_DB_HOST', 'db'), 
+        'PORT': '5432',
     }
 }
+
+
+
 
 
 # Internationalization
@@ -106,7 +113,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
