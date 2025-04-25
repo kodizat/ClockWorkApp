@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -93,18 +96,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'clockworkdb',
-        'USER': 'clockworkuser',
-        'PASSWORD': 'mysecurepassword',
-        'HOST': os.getenv('DJANGO_DB_HOST', 'db'), 
-        'PORT': '5432',
+        'NAME': os.getenv('DATABASE_NAME', 'clockworkdb'),
+        'USER': os.getenv('DATABASE_USER', 'clockworkuser'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'mysecurepassword'),
+        'HOST': os.getenv('DATABASE_HOST', 'db'), 
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
 
+AUTH_USER_MODEL = 'tracker.CustomUser'
+LOGIN_URL = 'login'
 
 
 

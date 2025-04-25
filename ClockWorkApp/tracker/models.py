@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 class CustomUser(AbstractUser):
     is_team_captain = models.BooleanField(default=False)
@@ -21,10 +22,25 @@ class CustomUser(AbstractUser):
         related_query_name='customuser'
     )
 
+    # models.py
+join_code = models.CharField(max_length=10, unique=True)
+
+
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
     captain = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    members = models.ManyToManyField(CustomUser, related_name='teams', blank=True)
+    join_code = models.CharField(max_length=10, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.join_code:
+            self.join_code = str(uuid.uuid4())[:8]  # Generates short, unique join code
+        super().save(*args, **kwargs)
+    
+    def is_member(self, user):
+        return self.members.filter(id=user.id).exists()
+
 
 
 class Habit(models.Model):

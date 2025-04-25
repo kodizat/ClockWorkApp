@@ -1,10 +1,8 @@
-version: '3'
-
 services:
   db:
     image: postgres:15
-    container_name: postgres_db
     restart: always
+    container_name: db
     environment:
       POSTGRES_DB: clockworkdb
       POSTGRES_USER: clockworkuser
@@ -26,8 +24,12 @@ services:
       db:
         condition: service_healthy
     environment:
+      - DJANGO_DB_NAME=clockworkdb
+      - DJANGO_DB_USER=clockworkuser
+      - DJANGO_DB_PASSWORD=mysecurepassword
       - DJANGO_DB_HOST=db
-      - DJANGO_ALLOWED_HOSTS=*
+    env_file:
+      - .env 
     ports:
       - "8000:8000"
     networks:
