@@ -6,6 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
+def login_view(request):
+    return render(request, 'login.html')
+
+def register_view(request):
+    return render(request, 'register.html')
 
 def register(request):
     if request.method == 'POST':
@@ -78,3 +83,9 @@ def create_team(request):
     else:
         form = TeamForm()
     return render(request, 'create_team.html', {'form': form})
+
+def create_team(request):
+    return render(request, 'create_team.html')
+
+def join_team(request):
+    return render(request, 'join_team.html')
