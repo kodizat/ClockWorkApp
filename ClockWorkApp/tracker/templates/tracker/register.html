@@ -49,20 +49,6 @@
                 </ul>
             {% endif %}
         </div>
-
-        <!-- is_team_captain Field (Checkbox) -->
-        <div>
-            <label for="id_is_team_captain">Are you the team captain?</label>
-            <input type="checkbox" name="is_team_captain" id="id_is_team_captain" {% if form.is_team_captain.value %}checked{% endif %}>
-            {% if form.is_team_captain.errors %}
-                <ul>
-                    {% for error in form.is_team_captain.errors %}
-                        <li style="color:red;">{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-
         <button type="submit">Register</button>
     </form>
 
